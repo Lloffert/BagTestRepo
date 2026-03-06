@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bag</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">Bag</div>
+      <div class="tagline">Secure your bag. Own your independence.</div>
+    </div>
+    <nav class="nav">
+      {% if session.get('user_id') %}
+        <a href="{{ url_for('core.dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('core.transaction_new') }}">Add Transaction</a>
+        <a href="{{ url_for('core.aid_new') }}">Add Aid</a>
+        <a href="{{ url_for('core.semesters') }}">Semesters</a>
+        <a href="{{ url_for('core.categories') }}">Categories</a>
+        <a href="{{ url_for('core.profile') }}">Profile</a>
+        <a href="{{ url_for('auth.logout') }}">Logout</a>
+      {% else %}
+        <a href="{{ url_for('auth.login') }}">Login</a>
+        <a href="{{ url_for('auth.register') }}">Register</a>
+      {% endif %}
+    </nav>
+  </header>
+
+  <main class="container">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="flash">
+          {% for message in messages %}
+            <div class="flash-item">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="footer">
+    <small>Bag capstone prototype · Flask + SQLite</small>
+  </footer>
+</body>
+</html>

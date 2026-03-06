@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h2>Add Aid (Lump Sum)</h2>
+  <form method="post" class="form grid">
+    <div>
+      <label>Source type</label>
+      <select name="source_type">
+        <option>FAFSA</option>
+        <option>GI_Bill</option>
+        <option>Scholarship</option>
+        <option>Loan</option>
+        <option>Savings</option>
+        <option>Other</option>
+      </select>
+    </div>
+    <div class="full">
+      <label>Label</label>
+      <input name="label" placeholder="FAFSA refund / GI Bill housing / Scholarship">
+    </div>
+    <div>
+      <label>Amount ($)</label>
+      <input type="number" step="0.01" min="0" name="amount" required>
+    </div>
+    <div>
+      <label>Disbursement date</label>
+      <input type="date" name="disbursement_date" required>
+    </div>
+    <div class="full">
+      <button class="btn" type="submit">Save Aid</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

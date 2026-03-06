@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h2>Dashboard</h2>
+  <p class="muted">You’re logged in, but you haven’t selected a semester yet.</p>
+  <div class="row">
+    <a class="btn" href="{{ url_for('core.semester_new') }}">Create a Semester</a>
+    <a class="btn secondary" href="{{ url_for('core.semesters') }}">Select a Semester</a>
+  </div>
+
+  {% if not profile %}
+    <hr class="sep">
+    <p class="muted">Next: add your <a href="{{ url_for('core.profile') }}">Profile</a> (optional but nice for demo).</p>
+  {% endif %}
+</div>
+{% endblock %}

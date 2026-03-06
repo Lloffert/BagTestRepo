@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h2>Profile</h2>
+  <form method="post" class="form grid">
+    <div>
+      <label>Display name</label>
+      <input name="display_name" value="{{ profile.display_name if profile else '' }}" placeholder="Joey">
+    </div>
+    <div>
+      <label>School (optional)</label>
+      <input name="school" value="{{ profile.school if profile else '' }}" placeholder="My College">
+    </div>
+    <div>
+      <label>Default semester weeks</label>
+      <input type="number" name="default_semester_weeks" min="8" max="26" value="{{ profile.default_semester_weeks if profile else 16 }}">
+    </div>
+    <div class="full">
+      <button class="btn" type="submit">Save Profile</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

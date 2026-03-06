@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="grid2">
+  <div class="card">
+    <div class="row">
+      <h2>Dashboard</h2>
+      <span class="pill {{ pace.status }}">{{ pace.status_text }}</span>
+    </div>
+    <p class="muted">
+      {% if profile and profile.display_name %}Hi {{ profile.display_name }}.{% endif %}
+      Active semester: <strong>{{ semester.name }}</strong>
+    </p>
+
+    <div class="kpis">
+      <div class="kpi">
+        <div class="kpi-label">Week</div>
+        <div class="kpi-value">{{ pace.week_now }} / {{ pace.weeks_total }}</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Safe to spend this week</div>
+        <div class="kpi-value">${{ "%.2f"|format(safe_weekly) }}</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Semester elapsed</div>
+        <div class="kpi-value">{{ "%.1f"|format(pace.semester_elapsed_pct) }}%</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Funds spent</div>
+        <div class="kpi-value">{{ "%.1f"|format(pace.funds_spent_pct) }}%</div>
+      </div>
+    </div>
+
+    <div class="message">
+      {{ pace.message }}
+    </div>
+
+    {% if alerts|length > 0 %}
+      <div class="alerts">
+        {% for a in alerts %}
+          <div class="alert">{{ a }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="card">
+    <h3>Totals</h3>
+    <div class="totals">
+      <div><span class="muted">Total funds</span><br><strong>${{ "%.2f"|format(total_funds) }}</strong></div>
+      <div><span class="muted">Spent</span><br><strong>${{ "%.2f"|format(spent) }}</strong></div>
+      <div><span class="muted">Remaining</span><br><strong>${{ "%.2f"|format(remaining) }}</strong></div>
+    </div>
+
+    {% if projection_week %}
+      <div class="projection">
+        <strong>Projection:</strong> At the current average pace, you may run out around <strong>week {{ projection_week }}</strong>.
+      </div>
+    {% else %}
+      <div class="projection muted">
+        Projection will appear after you add some expenses.
+      </div>
+    {% endif %}
+
+    <div class="row">
+      <a class="btn secondary" href="{{ url_for('core.aid_new') }}">+ Add Aid</a>
+      <a class="btn" href="{{ url_for('core.transaction_new') }}">+ Add Transaction</a>
+    </div>
+  </div>
+</div>
+
+<div class="grid2">
+  <div class="card">
+    <h3>Spending by category</h3>
+    {% if categories|length == 0 %}
+      <p class="muted">No categorized expenses yet.</p>
+    {% else %}
+      <table class="table">
+        <thead><tr><th>Category</th><th>Total</th></tr></thead>
+        <tbody>
+          {% for r in categories %}
+            <tr>
+              <td>{{ r.category }}</td>
+              <td>${{ "%.2f"|format(r.total_cents / 100) }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% endif %}
+  </div>
+
+  <div class="card">
+    <h3>Recent transactions</h3>
+    {% if recent|length == 0 %}
+      <p class="muted">No transactions yet.</p>
+    {% else %}
+      <table class="table">
+        <thead><tr><th>Date</th><th>Type</th><th>Category</th><th>Amount</th><th>Note</th></tr></thead>
+        <tbody>
+          {% for t in recent %}
+            <tr>
+              <td>{{ t.date }}</td>
+              <td>{{ t.type }}</td>
+              <td>{{ t.category_name }}</td>
+              <td>${{ "%.2f"|format(t.amount_cents / 100) }}</td>
+              <td class="muted">{{ t.note }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% endif %}
+  </div>
+</div>
+
+<div class="card">
+  <h3>Aid awards</h3>
+  {% if aid_list|length == 0 %}
+    <p class="muted">No aid awards yet.</p>
+  {% else %}
+    <table class="table">
+      <thead><tr><th>Date</th><th>Source</th><th>Label</th><th>Amount</th></tr></thead>
+      <tbody>
+        {% for a in aid_list %}
+          <tr>
+            <td>{{ a.disbursement_date }}</td>
+            <td>{{ a.source_type }}</td>
+            <td>{{ a.label }}</td>
+            <td>${{ "%.2f"|format(a.amount_cents / 100) }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endif %}
+</div>
+
+{% endblock %}

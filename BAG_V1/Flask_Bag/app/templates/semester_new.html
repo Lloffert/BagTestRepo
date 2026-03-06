@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h2>New Semester</h2>
+  <form method="post" class="form grid">
+    <div class="full">
+      <label>Semester name</label>
+      <input name="name" placeholder="Spring 2026">
+    </div>
+    <div>
+      <label>Start date</label>
+      <input type="date" name="start_date" required>
+    </div>
+    <div>
+      <label>End date</label>
+      <input type="date" name="end_date" required>
+    </div>
+    <div>
+      <label>Total weeks</label>
+      <input type="number" name="weeks" min="8" max="26" value="{{ default_weeks }}">
+      <div class="hint">Default: {{ default_weeks }} (typical is 16)</div>
+    </div>
+    <div class="full">
+      <button class="btn" type="submit">Create Semester</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

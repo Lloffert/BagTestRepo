@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <div class="row">
+    <h2>Semesters</h2>
+    <a class="btn secondary" href="{{ url_for('core.semester_new') }}">+ New Semester</a>
+  </div>
+
+  {% if semesters|length == 0 %}
+    <p class="muted">No semesters yet. Create one to start.</p>
+  {% else %}
+    <table class="table">
+      <thead>
+        <tr><th>Name</th><th>Dates</th><th>Weeks</th><th></th></tr>
+      </thead>
+      <tbody>
+        {% for s in semesters %}
+          <tr>
+            <td>
+              {% if s.id == active_semester_id %}
+                <span class="pill green">Active</span>
+              {% endif %}
+              <strong>{{ s.name }}</strong>
+            </td>
+            <td>{{ s.start_date }} → {{ s.end_date }}</td>
+            <td>{{ s.weeks }}</td>
+            <td><a class="link" href="{{ url_for('core.semester_select', semester_id=s.id) }}">Select</a></td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endif %}
+
+  {% if not profile %}
+    <p class="muted">Tip: Add your profile info for a nicer demo.</p>
+  {% endif %}
+</div>
+{% endblock %}
